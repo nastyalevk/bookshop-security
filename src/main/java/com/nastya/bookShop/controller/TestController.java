@@ -30,16 +30,6 @@ public class TestController {
         return response;
     }
 
-//    @GetMapping("/books")
-//    public ResponseEntity getBooks() {
-//        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-//        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-//        RestTemplate restTemplate = new RestTemplate(requestFactory);
-//        ResponseEntity<List<BookDto>> response = restTemplate.exchange("http://localhost:8080/books", HttpMethod.GET, null, new ParameterizedTypeReference<List<BookDto>>() {
-//        });
-//        return response;
-//    }
-
     @GetMapping("/client")
     @PreAuthorize("hasRole('ROLE_CLIENT') or hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')")
     public String userAccess() {
