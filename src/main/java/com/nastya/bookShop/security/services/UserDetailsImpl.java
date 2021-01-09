@@ -1,7 +1,7 @@
 package com.nastya.bookShop.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nastya.bookShop.model.User;
+import com.nastya.bookShop.model.user.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +14,7 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
-
-   private String username;
+    private String username;
 
     private String email;
 
@@ -25,23 +23,20 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Integer id, String username, String email, String password,
+    public UserDetailsImpl(String username, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getUserRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getUserRolesId().getRole().getName().name()))
+    public static UserDetailsImpl build(UserDto user) {
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
-
         return new UserDetailsImpl(
-                user.getId(),
-                user.getUserName(),
+                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities);
@@ -50,10 +45,6 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public void setUsername(String username) {
@@ -96,11 +87,10 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(id, user.id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDetailsImpl that = (UserDetailsImpl) o;
+        return Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(authorities, that.authorities);
     }
+
 }

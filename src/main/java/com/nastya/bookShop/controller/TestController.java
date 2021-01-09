@@ -1,12 +1,10 @@
 package com.nastya.bookShop.controller;
 
-import com.nastya.bookShop.dto.BookDto;
-import org.apache.http.impl.client.CloseableHttpClient;
+import com.nastya.bookShop.config.UrlConst;
+import com.nastya.bookShop.model.book.BookDto;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +20,10 @@ public class TestController {
 
     @GetMapping("/all")
     public ResponseEntity allAccess() {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-        ResponseEntity<List<BookDto>> response = restTemplate.exchange("http://localhost:8080/books", HttpMethod.GET, null, new ParameterizedTypeReference<List<BookDto>>() {
-        });
-        return response;
+        RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory
+                (HttpClientBuilder.create().build()));
+        List<BookDto> bookDtos = restTemplate.getForObject(UrlConst.BookUrl, List.class);
+        return new ResponseEntity(bookDtos, HttpStatus.OK);
     }
 
     @GetMapping("/client")

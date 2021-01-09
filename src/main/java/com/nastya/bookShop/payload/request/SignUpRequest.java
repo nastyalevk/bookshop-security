@@ -9,6 +9,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class SignUpRequest {
+
     @NotBlank
     private String username;
 
@@ -19,4 +20,5 @@ public class SignUpRequest {
 
     @NotBlank
     private String password;
+
 }

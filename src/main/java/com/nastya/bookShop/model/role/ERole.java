@@ -1,4 +1,4 @@
-package com.nastya.bookShop.model;
+package com.nastya.bookShop.model.role;
 
 public enum ERole {
     ROLE_ADMIN,
