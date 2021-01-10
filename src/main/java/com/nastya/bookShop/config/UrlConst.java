@@ -11,5 +11,6 @@ public class UrlConst {
     public static final String ShopUrl = Url + "/shop";
     public static final String UserUrl = Url + "/user";
     public static final String UserRoleUrl = Url + "/user/role";
+    public static final String AuthUrl = "/auth/";
 }
 

@@ -1,5 +1,6 @@
 package com.nastya.bookShop.controller;
 
+import com.nastya.bookShop.config.UrlConst;
 import com.nastya.bookShop.payload.request.LoginRequest;
 import com.nastya.bookShop.payload.request.SignUpRequest;
 import com.nastya.bookShop.service.api.AuthService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(UrlConst.AuthUrl)
 public class AuthController {
     private final AuthService authService;
 

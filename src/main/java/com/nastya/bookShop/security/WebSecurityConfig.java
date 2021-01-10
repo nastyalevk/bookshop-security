@@ -1,5 +1,6 @@
 package com.nastya.bookShop.security;
 
+import com.nastya.bookShop.config.UrlConst;
 import com.nastya.bookShop.security.jwt.AuthEntryPointJwt;
 import com.nastya.bookShop.security.jwt.AuthTokenFilter;
 import com.nastya.bookShop.security.services.UserDetailsServiceImpl;
@@ -56,8 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
+                .authorizeRequests().antMatchers(UrlConst.AuthUrl + "**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
