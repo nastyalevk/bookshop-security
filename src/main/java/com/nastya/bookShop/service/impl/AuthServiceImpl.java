@@ -62,7 +62,8 @@ public class AuthServiceImpl implements AuthService {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                roles,
+                userDetails.isAccountNonLocked()));
     }
 
     @Override
@@ -86,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
-
+        user.setActivated(signUpRequest.getActivated());
         Set<String> strRoles = signUpRequest.getRole();
         Set<RoleDto> roles = new HashSet<>();
 

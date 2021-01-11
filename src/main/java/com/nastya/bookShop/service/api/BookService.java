@@ -1,14 +1,15 @@
 package com.nastya.bookShop.service.api;
 
 import com.nastya.bookShop.model.book.BookDto;
-import com.nastya.bookShop.model.book.BooksDto;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface BookService {
 
         ResponseEntity<String> save (BookDto bookDto);
 
-        BooksDto getAllBook();
+        List getAllBook();
 
         ResponseEntity<String> updateBook(BookDto bookDto);
 }

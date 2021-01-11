@@ -20,5 +20,6 @@ public class UserDto {
     private String lastName;
     private String password;
     private Set<RoleDto> roles;
+    private Boolean activated;
 
 }
