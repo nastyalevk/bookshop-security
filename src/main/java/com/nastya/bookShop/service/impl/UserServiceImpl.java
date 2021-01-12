@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
             logger.error("User error: {}", e.getMessage());
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -78,6 +77,16 @@ public class UserServiceImpl implements UserService {
     public UserDto getOne(Integer id) {
         try {
             return restTemplate.getForObject(UrlConst.UserUrl + id, UserDto.class);
+        } catch (Exception e) {
+            logger.error("User error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateUser(UserDto userDto) {
+        try {
+            restTemplate.postForEntity(UrlConst.UserUrl + "update/", userDto, String.class);
         } catch (Exception e) {
             logger.error("User error: {}", e.getMessage());
             throw new RuntimeException(e);

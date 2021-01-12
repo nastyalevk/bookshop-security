@@ -18,4 +18,6 @@ public interface UserService {
 
     UserDto getOne(Integer id);
 
+    void updateUser(UserDto userDto);
+
 }
