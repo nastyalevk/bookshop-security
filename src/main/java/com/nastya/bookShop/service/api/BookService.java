@@ -12,4 +12,5 @@ public interface BookService {
         List getAllBook();
 
         ResponseEntity<String> updateBook(BookDto bookDto);
+
 }
