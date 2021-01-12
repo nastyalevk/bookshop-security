@@ -1,7 +1,7 @@
 package com.nastya.bookShop.service.api;
 
-import com.nastya.bookShop.payload.request.LoginRequest;
-import com.nastya.bookShop.payload.request.SignUpRequest;
+import com.nastya.bookShop.model.request.LoginRequest;
+import com.nastya.bookShop.model.request.SignUpRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthService {

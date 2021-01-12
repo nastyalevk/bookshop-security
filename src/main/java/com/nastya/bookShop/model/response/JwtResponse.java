@@ -1,4 +1,4 @@
-package com.nastya.bookShop.payload.response;
+package com.nastya.bookShop.model.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

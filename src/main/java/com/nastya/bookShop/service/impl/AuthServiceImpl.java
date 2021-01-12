@@ -1,13 +1,13 @@
 package com.nastya.bookShop.service.impl;
 
+import com.nastya.bookShop.model.request.LoginRequest;
+import com.nastya.bookShop.model.request.SignUpRequest;
+import com.nastya.bookShop.model.response.JwtResponse;
+import com.nastya.bookShop.model.response.MessageResponse;
 import com.nastya.bookShop.model.role.ERole;
 import com.nastya.bookShop.model.role.RoleDto;
 import com.nastya.bookShop.model.user.UserDto;
 import com.nastya.bookShop.model.userRoles.UserRolesDto;
-import com.nastya.bookShop.payload.request.LoginRequest;
-import com.nastya.bookShop.payload.request.SignUpRequest;
-import com.nastya.bookShop.payload.response.JwtResponse;
-import com.nastya.bookShop.payload.response.MessageResponse;
 import com.nastya.bookShop.security.jwt.JwtUtils;
 import com.nastya.bookShop.security.services.UserDetailsImpl;
 import com.nastya.bookShop.service.api.AuthService;
