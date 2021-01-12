@@ -8,8 +8,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
-@AllArgsConstructor
+//@JsonIgnoreProperties(ignoreUnknown = true)
+//@AllArgsConstructor
 @NoArgsConstructor
 public class BookDto {
 

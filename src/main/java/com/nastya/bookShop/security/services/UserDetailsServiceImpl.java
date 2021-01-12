@@ -1,6 +1,7 @@
 package com.nastya.bookShop.security.services;
 
-import com.nastya.bookShop.service.impl.UserServiceImpl;
+import com.nastya.bookShop.service.api.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +12,12 @@ import javax.transaction.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserServiceImpl userService = new UserServiceImpl();
+    private final UserService userService;
+
+    @Autowired
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     @Transactional

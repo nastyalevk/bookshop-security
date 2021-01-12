@@ -13,6 +13,7 @@ import com.nastya.bookShop.security.services.UserDetailsImpl;
 import com.nastya.bookShop.service.api.AuthService;
 import com.nastya.bookShop.service.api.UserRoleService;
 import com.nastya.bookShop.service.api.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private UserService userService;
     private UserRoleService userRoleService;
 
+    @Autowired
     public AuthServiceImpl(AuthenticationManager authenticationManager, PasswordEncoder encoder,
                            JwtUtils jwtUtils, UserService userService, UserRoleService userRoleService) {
         this.authenticationManager = authenticationManager;
@@ -59,11 +61,13 @@ public class AuthServiceImpl implements AuthService {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles,
-                userDetails.isAccountNonLocked()));
+        JwtResponse jwtResponse = new JwtResponse();
+        jwtResponse.setToken(jwt);
+        jwtResponse.setUsername(userDetails.getUsername());
+        jwtResponse.setEmail(userDetails.getEmail());
+        jwtResponse.setRoles(roles);
+        jwtResponse.setActivated(userDetails.isAccountNonLocked());
+        return ResponseEntity.ok(jwtResponse);
     }
 
     @Override
@@ -87,10 +91,14 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
-        user.setActivated(signUpRequest.getActivated());
+        Boolean activated = signUpRequest.getActivated();
+        if (!activated) {
+            user.setActivated(true);
+        } else {
+            user.setActivated(signUpRequest.getActivated());
+        }
         Set<String> strRoles = signUpRequest.getRole();
         Set<RoleDto> roles = new HashSet<>();
-
         if (strRoles == null) {
             RoleDto userRole = new RoleDto();
             userRole.setName(ERole.ROLE_CLIENT);
@@ -128,4 +136,5 @@ public class AuthServiceImpl implements AuthService {
         }
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
 }
