@@ -1,5 +1,6 @@
 package com.nastya.bookShop.controller;
 
+import com.nastya.bookShop.model.role.RoleDto;
 import com.nastya.bookShop.model.user.UserDto;
 import com.nastya.bookShop.service.api.UserService;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity create (@RequestBody UserDto userDto){
-        try {
+        try{
             userService.saveUser(userDto);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {

@@ -1,16 +1,18 @@
 package com.nastya.bookShop.model.user;
 
-import com.nastya.bookShop.model.role.RoleDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
-@Getter
 @Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class FEUser {
 
     private Integer id;
     private String username;
@@ -18,7 +20,7 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String password;
-    private Set<RoleDto> roles;
+    private List<String> roles;
     private Boolean activated;
 
 }
