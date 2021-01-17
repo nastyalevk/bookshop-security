@@ -33,7 +33,7 @@ public class AuthController {
         try {
             return authService.authenticateUser(loginRequest);
         } catch (Exception e) {
-            logger.error("Book error: {}", e.getMessage());
+            logger.error("Authorization error: {}", e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -44,7 +44,7 @@ public class AuthController {
         try {
             return authService.registerUser(signUpRequest);
         } catch (Exception e) {
-            logger.error("Book error: {}", e.getMessage());
+            logger.error("Registration error: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }

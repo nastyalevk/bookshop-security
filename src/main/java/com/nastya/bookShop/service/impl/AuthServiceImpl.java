@@ -93,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         Boolean activated = signUpRequest.getActivated();
-        if (!activated) {
+        if (activated == null) {
             user.setActivated(true);
         } else {
             user.setActivated(signUpRequest.getActivated());
@@ -131,6 +131,7 @@ public class AuthServiceImpl implements AuthService {
         userService.saveUser(user);
         UserRolesDto userRolesDto = new UserRolesDto();
         for (RoleDto i : roles) {
+            System.out.println(i.getName());
             userRolesDto.setUsername(user.getUsername());
             userRolesDto.setRoleId(i.getId());
             userRoleService.save(userRolesDto);
