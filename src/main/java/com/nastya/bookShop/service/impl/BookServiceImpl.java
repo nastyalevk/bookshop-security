@@ -49,9 +49,9 @@ public class BookServiceImpl implements BookService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.BookUrl)
                     .queryParam("bookName", bookName)
-                    .queryParam("page", String.valueOf(page))
-                    .queryParam("size", String.valueOf(size))
-                    .queryParam("sort", String.valueOf(sort));
+                    .queryParam("page", page)
+                    .queryParam("size", size)
+                    .queryParam("sort", sort);
 
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
