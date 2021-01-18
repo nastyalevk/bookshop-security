@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseEntity<String> save(BookDto bookDto) {
         try {
-            return restTemplate.postForEntity(UrlConst.BookUrl + "create", bookDto, String.class );
+            return restTemplate.postForEntity(UrlConst.BookUrl + "create", bookDto, String.class);
         } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -41,9 +41,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List getAllBook() {
+    public ResponseEntity<LinkedHashMap> getAllBook(String bookName, int page, int size, String[] sort) {
         try {
-            return restTemplate.getForObject(UrlConst.BookUrl, List.class);
+            HttpHeaders headers = new HttpHeaders();
+
+            headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.BookUrl)
+                    .queryParam("bookName", bookName)
+                    .queryParam("page", String.valueOf(page))
+                    .queryParam("size", String.valueOf(size))
+                    .queryParam("sort", String.valueOf(sort));
+
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+
+            HttpEntity request = new HttpEntity(headers);
+
+            return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, LinkedHashMap.class);
         } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -53,7 +67,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseEntity<String> updateBook(BookDto bookDto) {
         try {
-            return restTemplate.postForEntity(UrlConst.BookUrl+"update", bookDto, String.class);
+            return restTemplate.postForEntity(UrlConst.BookUrl + "update", bookDto, String.class);
         } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
