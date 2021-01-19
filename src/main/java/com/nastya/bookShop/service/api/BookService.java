@@ -13,4 +13,6 @@ public interface BookService {
 
     ResponseEntity<String> updateBook(BookDto bookDto);
 
+    BookDto getOne(Integer id);
+
 }

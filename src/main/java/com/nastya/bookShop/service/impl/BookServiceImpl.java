@@ -73,4 +73,14 @@ public class BookServiceImpl implements BookService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public BookDto getOne(Integer id) {
+        try {
+            return restTemplate.getForObject(UrlConst.BookUrl + id, BookDto.class);
+        }catch (Exception e){
+            logger.error("Book error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }
