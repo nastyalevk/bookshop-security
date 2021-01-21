@@ -3,8 +3,6 @@ package com.nastya.bookShop.service.api;
 import com.nastya.bookShop.model.book.BookDto;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
-
 public interface BookService {
 
     ResponseEntity<String> save(BookDto bookDto);
