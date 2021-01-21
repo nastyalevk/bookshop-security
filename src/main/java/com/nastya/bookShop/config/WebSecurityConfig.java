@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers(UrlConst.AuthUrl + "**").permitAll()
                 .antMatchers("/book/**").permitAll()
                 .antMatchers("/order/**").permitAll()
+                .antMatchers("/assortment/**").permitAll()
 //                .antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated();
 
