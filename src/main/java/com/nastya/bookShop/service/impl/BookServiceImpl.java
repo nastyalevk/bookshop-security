@@ -2,6 +2,7 @@ package com.nastya.bookShop.service.impl;
 
 import com.nastya.bookShop.config.UrlConst;
 import com.nastya.bookShop.model.book.BookDto;
+import com.nastya.bookShop.model.response.PageResponse;
 import com.nastya.bookShop.service.api.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -41,10 +42,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseEntity<LinkedHashMap> getAllBook(String bookName, int page, int size, String[] sort) {
+    public ResponseEntity getAllBook(String bookName, int page, int size, String sort) {
         try {
             HttpHeaders headers = new HttpHeaders();
-
             headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.BookUrl)
@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
 
             HttpEntity request = new HttpEntity(headers);
 
-            return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, LinkedHashMap.class);
+            return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
         } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -78,7 +78,7 @@ public class BookServiceImpl implements BookService {
     public BookDto getOne(Integer id) {
         try {
             return restTemplate.getForObject(UrlConst.BookUrl + id, BookDto.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
         }

@@ -1,5 +1,8 @@
 package com.nastya.bookShop.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nastya.bookShop.model.book.BookDto;
 import com.nastya.bookShop.service.api.BookService;
 import org.slf4j.Logger;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -32,10 +36,10 @@ public class BookController {
     }
 
     @GetMapping()
-    public ResponseEntity<Map<String, Object>> findAll(@RequestParam(required = false) String bookName,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "3") int size,
-                                                       @RequestParam(defaultValue = "id,desc") String[] sort)  {
+    public ResponseEntity findAll(@RequestParam(required = false) String bookName,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "3") int size,
+                                  @RequestParam(value = "sort") String sort)  {
         try {
             return new ResponseEntity(bookService.getAllBook(bookName, page, size, sort), HttpStatus.OK);
         } catch (Exception e) {
