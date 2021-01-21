@@ -9,8 +9,13 @@ import com.nastya.bookShop.service.api.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,9 +95,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserDto userDto) {
+    public void updateUserRoles(String[] roles, Integer id) {
         try {
-            restTemplate.postForEntity(UrlConst.UserUrl + "update/", userDto, String.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.UserUrl + "update-roles/")
+                    .queryParam("roles", roles)
+                    .queryParam("id", id);
+
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+
+            restTemplate.exchange(
+                    builder.toUriString(),
+                    HttpMethod.GET,
+                    entity,
+                    String.class);
         } catch (Exception e) {
             logger.error("User error: {}", e.getMessage());
             throw new RuntimeException(e);

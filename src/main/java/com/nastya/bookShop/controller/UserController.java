@@ -1,6 +1,5 @@
 package com.nastya.bookShop.controller;
 
-import com.nastya.bookShop.model.role.RoleDto;
 import com.nastya.bookShop.model.user.UserDto;
 import com.nastya.bookShop.service.api.UserService;
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,8 +31,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity create (@RequestBody UserDto userDto){
-        try{
+    public ResponseEntity create(@RequestBody UserDto userDto) {
+        try {
             userService.saveUser(userDto);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
@@ -42,10 +42,10 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/update")
-    public ResponseEntity update (@RequestBody UserDto userDto){
+    @GetMapping("/update-roles/")
+    public ResponseEntity updateRoles(@RequestParam String[] roles, @RequestParam Integer id) {
         try {
-            userService.updateUser(userDto);
+            userService.updateUserRoles(roles, id);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             logger.error("User error: {}", e.getMessage());
@@ -55,7 +55,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
-    public ResponseEntity findAll (){
+    public ResponseEntity findAll() {
         try {
             return new ResponseEntity(userService.findAll(), HttpStatus.OK);
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity getOne (@PathVariable("id") Integer id){
+    public ResponseEntity getOne(@PathVariable("id") Integer id) {
         try {
             return new ResponseEntity(userService.getOne(id), HttpStatus.OK);
         } catch (Exception e) {
