@@ -1,7 +1,6 @@
 package com.nastya.bookShop.service.impl;
 
 import com.nastya.bookShop.config.UrlConst;
-import com.nastya.bookShop.model.book.BookDto;
 import com.nastya.bookShop.service.api.AssortmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,4 +28,14 @@ public class AssortmentServiceImpl implements AssortmentService {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
         }    }
+
+    @Override
+    public int getPriceByBookShop(int bookId, int shopId) {
+        try {
+            return restTemplate.getForObject(UrlConst.AssortmentUrl + "/price/" + bookId+"/"+ shopId, int.class);
+        } catch (Exception e) {
+            logger.error("Book error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }
