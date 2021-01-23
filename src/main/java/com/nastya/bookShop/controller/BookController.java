@@ -42,7 +42,6 @@ public class BookController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_OWNER')")
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody BookDto bookDto) {
         try {
@@ -53,7 +52,6 @@ public class BookController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_OWNER')")
     @PostMapping("/update")
     public ResponseEntity update(@RequestBody BookDto bookDto) {
         try {

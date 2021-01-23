@@ -29,7 +29,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody UserDto userDto) {
         try {
@@ -41,7 +40,6 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/update-roles/")
     public ResponseEntity updateRoles(@RequestParam String[] roles, @RequestParam Integer id) {
         try {
@@ -53,7 +51,6 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
     public ResponseEntity findAll() {
         try {
@@ -64,7 +61,6 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable("id") Integer id) {
         try {
