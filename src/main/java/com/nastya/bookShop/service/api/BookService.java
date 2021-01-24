@@ -7,7 +7,7 @@ public interface BookService {
 
     ResponseEntity<String> save(BookDto bookDto);
 
-    ResponseEntity getAllBook(String bookName, int page, int size, String sort);
+    ResponseEntity getAllBook(String bookName, int page, int size, String[] sort);
 
     ResponseEntity<String> updateBook(BookDto bookDto);
 
