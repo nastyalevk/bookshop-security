@@ -43,8 +43,6 @@ public class BookServiceImpl implements BookService {
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
-        HttpEntity request = new HttpEntity(headers);
-
         return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
     }
 
