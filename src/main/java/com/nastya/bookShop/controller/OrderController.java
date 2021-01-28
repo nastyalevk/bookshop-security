@@ -2,7 +2,6 @@ package com.nastya.bookShop.controller;
 
 import com.nastya.bookShop.model.Order.OrderContentDto;
 import com.nastya.bookShop.model.Order.OrderDto;
-import com.nastya.bookShop.model.user.UserDto;
 import com.nastya.bookShop.service.api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +26,10 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<HttpStatus> createOrder(@RequestBody OrderDto orderDto) {
         try {
             orderService.saveOrder(orderDto);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Order error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -38,10 +37,10 @@ public class OrderController {
     }
 
     @PostMapping("/content/create")
-    public ResponseEntity createOrderContent(@RequestBody OrderContentDto orderContentDto) {
+    public ResponseEntity<HttpStatus> createOrderContent(@RequestBody OrderContentDto orderContentDto) {
         try {
             orderService.saveOrderContent(orderContentDto);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Order error: {}", e.getMessage());
             throw new RuntimeException(e);

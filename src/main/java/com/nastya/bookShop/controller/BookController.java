@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +34,7 @@ public class BookController {
                                   @RequestParam(defaultValue = "3") int size,
                                   @RequestParam(required = false) String[] sort) {
         try {
-            return new ResponseEntity(bookService.getAllBook(bookName, page, size, sort), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.getAllBook(bookName, page, size, sort), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -45,7 +44,7 @@ public class BookController {
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody BookDto bookDto) {
         try {
-            return new ResponseEntity(bookService.save(bookDto), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.save(bookDto), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Book error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -55,7 +54,7 @@ public class BookController {
     @PostMapping("/update")
     public ResponseEntity update(@RequestBody BookDto bookDto) {
         try {
-            return new ResponseEntity(bookService.updateBook(bookDto), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.updateBook(bookDto), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -63,9 +62,9 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOne(@PathVariable("id") Integer id) {
+    public ResponseEntity<BookDto> getOne(@PathVariable("id") Integer id) {
         try {
-            return new ResponseEntity(bookService.getOne(id), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);

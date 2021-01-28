@@ -1,7 +1,6 @@
 package com.nastya.bookShop.controller;
 
 import com.nastya.bookShop.service.api.AssortmentService;
-import com.nastya.bookShop.service.api.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +24,19 @@ public class AssortmentController {
     }
 
     @GetMapping("/price/{id}")
-    public ResponseEntity getMinPrice(@PathVariable("id") Integer bookId) {
+    public ResponseEntity<Integer> getMinPrice(@PathVariable("id") Integer bookId) {
         try {
-            return new ResponseEntity(assortmentService.getPrice(bookId), HttpStatus.OK);
+            return new ResponseEntity<>(assortmentService.getMinPrice(bookId), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
     @GetMapping("/price/{bookId}/{shopId}")
-    public ResponseEntity getPriceByBookShop(@PathVariable("bookId") Integer bookId,
+    public ResponseEntity<Integer> getPriceByBookShop(@PathVariable("bookId") Integer bookId,
                                              @PathVariable("shopId") Integer shopId) {
         try {
-            return new ResponseEntity(assortmentService.getPriceByBookShop(bookId, shopId), HttpStatus.OK);
+            return new ResponseEntity<>(assortmentService.getPriceByBookShop(bookId, shopId), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);
