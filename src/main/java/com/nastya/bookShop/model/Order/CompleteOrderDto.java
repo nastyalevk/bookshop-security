@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 @Getter
@@ -18,11 +19,11 @@ public class CompleteOrderDto {
     private Integer cost;
     private String deliveryAddress;
     private String description;
-    private Date OrderSubmitDate;
+    private String OrderSubmitDate;
     private Integer classificationId;
     private String classificationStatus;
-    private Date orderCompleteDate;
-    private Integer userId;
+    private String orderCompleteDate;
+    private String username;
 
     List<OrderContentDto> orderContent;
 }

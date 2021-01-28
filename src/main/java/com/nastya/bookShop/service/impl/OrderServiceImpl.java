@@ -30,6 +30,17 @@ public class OrderServiceImpl implements OrderService {
         return transfer(order, orderContent);
     }
 
+    @Override
+    public void saveOrder(OrderDto orderDto) {
+        restTemplate.postForEntity(UrlConst.OrderUrl+"/create", orderDto, String.class);
+    }
+
+    @Override
+    public void saveOrderContent(OrderContentDto orderContentDto) {
+        restTemplate.postForEntity(UrlConst.OrderContentUrl+"/create", orderContentDto, String.class);
+    }
+
+
     private CompleteOrderDto transfer(OrderDto orderDto, List<OrderContentDto> orderContentDto) {
         CompleteOrderDto completeOrderDto = new CompleteOrderDto();
         completeOrderDto.setOrderNumber(orderDto.getOrderNumber());
@@ -41,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         completeOrderDto.setClassificationId(orderDto.getClassificationId());
         completeOrderDto.setClassificationStatus(orderDto.getClassificationStatus());
         completeOrderDto.setOrderCompleteDate(orderDto.getOrderCompleteDate());
-        completeOrderDto.setUserId(orderDto.getUserId());
+        completeOrderDto.setUsername(orderDto.getUsername());
         completeOrderDto.setOrderContent(orderContentDto);
         return completeOrderDto;
     }
