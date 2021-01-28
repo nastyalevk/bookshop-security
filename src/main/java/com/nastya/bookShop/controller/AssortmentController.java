@@ -25,9 +25,9 @@ public class AssortmentController {
     }
 
     @GetMapping("/price/{id}")
-    public ResponseEntity getLowestPrice(@PathVariable("id") Integer id) {
+    public ResponseEntity getMinPrice(@PathVariable("id") Integer bookId) {
         try {
-            return new ResponseEntity(assortmentService.getPrice(id), HttpStatus.OK);
+            return new ResponseEntity(assortmentService.getPrice(bookId), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);

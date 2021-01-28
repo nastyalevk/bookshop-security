@@ -17,8 +17,8 @@ public class AssortmentServiceImpl implements AssortmentService {
     }
 
     @Override
-    public int getPrice(int id) {
-        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/price/" + id, int.class);
+    public int getMinPrice(int bookId) {
+        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/price/" + bookId, int.class);
     }
 
     @Override
