@@ -37,4 +37,14 @@ public class ShopController {
         }
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<List<ShopDto>> getShopByUsername(@PathVariable("username") String username) {
+        try {
+            return new ResponseEntity<>(shopService.getShopByUsername(username), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Assortment error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 }

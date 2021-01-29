@@ -19,8 +19,14 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopDto> getShopByBook(int id) {
-        return restTemplate.getForObject(UrlConst.ShopUrl + "/book/" + id, List.class);
+    public List<ShopDto> getShopByBook(int bookId) {
+        return restTemplate.getForObject(UrlConst.ShopUrl + "/book/" + bookId, List.class);
     }
+
+    @Override
+    public List<ShopDto> getShopByUsername(String username) {
+        return restTemplate.getForObject(UrlConst.ShopUrl+"/username/"+username, List.class);
+    }
+
 
 }
