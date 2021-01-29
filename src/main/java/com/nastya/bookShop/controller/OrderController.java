@@ -26,10 +26,9 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
         try {
-            orderService.saveOrder(orderDto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(orderService.saveOrder(orderDto), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Order error: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -37,10 +36,9 @@ public class OrderController {
     }
 
     @PostMapping("/content/create")
-    public ResponseEntity<HttpStatus> createOrderContent(@RequestBody OrderContentDto orderContentDto) {
+    public ResponseEntity<OrderContentDto> createOrderContent(@RequestBody OrderContentDto orderContentDto) {
         try {
-            orderService.saveOrderContent(orderContentDto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(orderService.saveOrderContent(orderContentDto), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Order error: {}", e.getMessage());
             throw new RuntimeException(e);

@@ -7,7 +7,7 @@ import com.nastya.bookShop.model.Order.OrderDto;
 public interface OrderService {
     CompleteOrderDto getClientOrder(Integer id);
 
-    void saveOrder(OrderDto orderDto);
+    OrderDto saveOrder(OrderDto orderDto);
 
-    void saveOrderContent(OrderContentDto orderContentDto);
+    OrderContentDto saveOrderContent(OrderContentDto orderContentDto);
 }

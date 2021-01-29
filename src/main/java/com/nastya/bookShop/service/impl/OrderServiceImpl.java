@@ -26,18 +26,19 @@ public class OrderServiceImpl implements OrderService {
     public CompleteOrderDto getClientOrder(Integer id) {
         OrderDto order = restTemplate.getForObject(UrlConst.OrderUrl + "client/" + id, OrderDto.class);
         List<OrderContentDto> orderContent = restTemplate.getForObject
-                (UrlConst.OrderContentUrl + order.getId(), List.class);
+                (UrlConst.OrderContentUrl + order.getOrderId(), List.class);
         return transfer(order, orderContent);
     }
 
     @Override
-    public void saveOrder(OrderDto orderDto) {
-        restTemplate.postForEntity(UrlConst.OrderUrl+"/create", orderDto, String.class);
+    public OrderDto saveOrder(OrderDto orderDto) {
+       return restTemplate.postForEntity(UrlConst.OrderUrl+"/create", orderDto, OrderDto.class).getBody();
     }
 
     @Override
-    public void saveOrderContent(OrderContentDto orderContentDto) {
-        restTemplate.postForEntity(UrlConst.OrderContentUrl+"/create", orderContentDto, String.class);
+    public OrderContentDto saveOrderContent(OrderContentDto orderContentDto) {
+        return restTemplate.postForEntity
+                (UrlConst.OrderContentUrl+"/create", orderContentDto, OrderContentDto.class).getBody();
     }
 
 

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderContentDto {
 
-    private Integer orderNumber;
+    private Integer orderId;
     private Integer bookId;
     private Integer quantity;
     private Integer price;
