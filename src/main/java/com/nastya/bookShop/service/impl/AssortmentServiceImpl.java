@@ -1,8 +1,11 @@
 package com.nastya.bookShop.service.impl;
 
 import com.nastya.bookShop.config.UrlConst;
+import com.nastya.bookShop.model.Assortment.AssortmentDto;
 import com.nastya.bookShop.service.api.AssortmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,5 +27,27 @@ public class AssortmentServiceImpl implements AssortmentService {
     @Override
     public int getPriceByBookShop(int bookId, int shopId) {
         return restTemplate.getForObject(UrlConst.AssortmentUrl + "/price/" + bookId + "/" + shopId, int.class);
+    }
+
+    @Override
+    public ResponseEntity<AssortmentDto> save(AssortmentDto assortmentDto) {
+        return restTemplate.postForEntity(UrlConst.AssortmentUrl + "/create", assortmentDto, AssortmentDto.class);
+    }
+
+    @Override
+    public boolean existsByBook(Integer bookId, Integer shopId) {
+        return restTemplate.
+                getForObject(UrlConst.AssortmentUrl + "/exists/" + bookId + "/" + shopId, Boolean.class).
+                booleanValue();
+    }
+
+    @Override
+    public void delete(Integer bookId, Integer shopId) {
+        restTemplate.getForObject(UrlConst.AssortmentUrl + "/delete/" + bookId + "/" + shopId, HttpStatus.class);
+    }
+
+    @Override
+    public AssortmentDto getOne(Integer bookId, Integer shopId) {
+        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/" + bookId + "/" + shopId, AssortmentDto.class);
     }
 }

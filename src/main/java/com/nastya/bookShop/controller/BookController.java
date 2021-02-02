@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -42,7 +44,7 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody BookDto bookDto) {
+    public ResponseEntity<BookDto> create(@RequestBody BookDto bookDto) {
         try {
             return new ResponseEntity<>(bookService.save(bookDto), HttpStatus.OK);
         } catch (Exception e) {
@@ -65,6 +67,16 @@ public class BookController {
     public ResponseEntity<BookDto> getOne(@PathVariable("id") Integer id) {
         try {
             return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Assortment error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/shop/{id}")
+    public ResponseEntity<List<BookDto>> getBooksByShop(@PathVariable("id") Integer id) {
+        try {
+            return new ResponseEntity<>(bookService.getBooksByShop(id), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);

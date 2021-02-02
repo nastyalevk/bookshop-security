@@ -72,4 +72,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/find/username/{username}")
+    public ResponseEntity<UserDto> findByUserName(@PathVariable("username") String userName) {
+        try {
+            return new ResponseEntity<>(userService.findByUserName(userName), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("User error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 }

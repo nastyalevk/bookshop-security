@@ -41,6 +41,26 @@ public class OrderServiceImpl implements OrderService {
                 (UrlConst.OrderContentUrl+"/create", orderContentDto, OrderContentDto.class).getBody();
     }
 
+    @Override
+    public List<OrderDto> getOrdersByClientUsername(String username) {
+        return restTemplate.getForObject(UrlConst.OrderUrl + "/client/username/"+ username, List.class);
+    }
+
+    @Override
+    public List<OrderDto> getOrderByShop(Integer id) {
+        return restTemplate.getForObject(UrlConst.OrderUrl + "/shop/" + id, List.class);
+    }
+
+    @Override
+    public OrderDto getOrder(Integer id) {
+        return restTemplate.getForObject(UrlConst.OrderUrl + "/"+ id, OrderDto.class);
+    }
+
+    @Override
+    public List<OrderContentDto> getOrderContent(Integer orderId) {
+        return restTemplate.getForObject(UrlConst.OrderContentUrl + "/" + orderId, List.class);
+    }
+
 
     private CompleteOrderDto transfer(OrderDto orderDto, List<OrderContentDto> orderContentDto) {
         CompleteOrderDto completeOrderDto = new CompleteOrderDto();

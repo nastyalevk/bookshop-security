@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -26,8 +28,8 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public ResponseEntity<String> save(BookDto bookDto) {
-        return restTemplate.postForEntity(UrlConst.BookUrl + "create", bookDto, String.class);
+    public BookDto save(BookDto bookDto) {
+        return restTemplate.postForEntity(UrlConst.BookUrl + "create", bookDto, BookDto.class).getBody();
     }
 
     @Override
@@ -54,5 +56,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getOne(Integer id) {
         return restTemplate.getForObject(UrlConst.BookUrl + id, BookDto.class);
+    }
+
+    @Override
+    public List<BookDto> getBooksByShop(Integer shopId) {
+        return restTemplate.getForObject(UrlConst.BookUrl+"shop/"+ shopId, List.class);
     }
 }
