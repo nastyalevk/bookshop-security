@@ -1,6 +1,5 @@
 package com.nastya.bookShop.config;
 
-import com.nastya.bookShop.model.role.ERole;
 import com.nastya.bookShop.security.jwt.AuthEntryPointJwt;
 import com.nastya.bookShop.security.jwt.AuthTokenFilter;
 import com.nastya.bookShop.security.jwt.JwtUtils;
@@ -67,8 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasRole("ADMIN")
                 .antMatchers("/book/create").hasRole("OWNER")
                 .antMatchers("/book/update").hasRole("OWNER")
-                .antMatchers("/book/**").permitAll()
                 .antMatchers("/order/**").permitAll()
+                .antMatchers("/book/**").permitAll()
                 .antMatchers("/assortment/**").permitAll()
                 .antMatchers("/shop/**").permitAll()
                 .anyRequest().authenticated();

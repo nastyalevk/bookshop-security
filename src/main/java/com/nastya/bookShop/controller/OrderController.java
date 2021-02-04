@@ -2,7 +2,6 @@ package com.nastya.bookShop.controller;
 
 import com.nastya.bookShop.model.Order.OrderContentDto;
 import com.nastya.bookShop.model.Order.OrderDto;
-import com.nastya.bookShop.model.shop.ShopDto;
 import com.nastya.bookShop.service.api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -69,10 +69,22 @@ public class OrderController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/content/{orderId}")
     public ResponseEntity<List<OrderContentDto>> getOrderContent(@PathVariable("orderId") Integer orderId) {
         try {
             return new ResponseEntity<>(orderService.getOrderContent(orderId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Order error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/client/")
+    public ResponseEntity getOrdersByClient(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "9") int size) {
+        try {
+            return new ResponseEntity<>(orderService.getOrdersByClientUsername(page, size), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Order error: {}", e.getMessage());
             throw new RuntimeException(e);

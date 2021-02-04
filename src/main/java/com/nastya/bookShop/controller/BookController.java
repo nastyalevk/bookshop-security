@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -30,18 +28,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping()
-    public ResponseEntity findAll(@RequestParam(required = false) String bookName,
-                                  @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "3") int size,
-                                  @RequestParam(required = false) String[] sort) {
-        try {
-            return new ResponseEntity<>(bookService.getAllBook(bookName, page, size, sort), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Book error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
 
     @PostMapping("/create")
     public ResponseEntity<BookDto> create(@RequestBody BookDto bookDto) {
@@ -73,10 +59,25 @@ public class BookController {
         }
     }
 
-    @GetMapping("/shop/{id}")
-    public ResponseEntity<List<BookDto>> getBooksByShop(@PathVariable("id") Integer id) {
+    @GetMapping()
+    public ResponseEntity findAll(@RequestParam(required = false) String bookName,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "3") int size,
+                                  @RequestParam(required = false) String[] sort) {
         try {
-            return new ResponseEntity<>(bookService.getBooksByShop(id), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.getAllBook(bookName, page, size, sort), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Book error: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/shop/")
+    public ResponseEntity getBooksByShop(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "9") int size,
+                                         @RequestParam() Integer id) {
+        try {
+            return new ResponseEntity(bookService.getBooksByShop(page, size, id), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);

@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -59,7 +57,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getBooksByShop(Integer shopId) {
-        return restTemplate.getForObject(UrlConst.BookUrl+"shop/"+ shopId, List.class);
+    public ResponseEntity getBooksByShop(Integer page, Integer size, Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.BookUrl + "shop/")
+                .queryParam("id", id)
+                .queryParam("page", page)
+                .queryParam("size", size);
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
     }
 }
