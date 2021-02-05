@@ -36,8 +36,8 @@ public class ReviewServiceImpl implements ReviewService {
     public ShopReviewDto saveShopReview(ShopReviewDto shopReviewDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            shopReviewDto.setUsername(currentUserName);
+            String username = authentication.getName();
+            shopReviewDto.setUsername(username);
         }
         return this.restTemplate.
                 postForEntity(UrlConst.ReviewUrl + "shop/create/", shopReviewDto, ShopReviewDto.class).getBody();
@@ -47,8 +47,8 @@ public class ReviewServiceImpl implements ReviewService {
     public BookReviewDto saveBookReview(BookReviewDto bookReviewDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            bookReviewDto.setUsername(currentUserName);
+            String username = authentication.getName();
+            bookReviewDto.setUsername(username);
         }
         return this.restTemplate.
                 postForEntity(UrlConst.ReviewUrl + "book/create/", bookReviewDto, BookReviewDto.class).getBody();

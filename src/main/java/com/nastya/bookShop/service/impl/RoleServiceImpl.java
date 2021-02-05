@@ -3,13 +3,11 @@ package com.nastya.bookShop.service.impl;
 import com.nastya.bookShop.config.UrlConst;
 import com.nastya.bookShop.model.role.RoleDto;
 import com.nastya.bookShop.service.api.RoleService;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -21,8 +19,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Optional<RoleDto> findByName(String name) {
-        CloseableHttpClient httpClientBuilder = HttpClientBuilder.create().build();
-        return restTemplate.getForObject(UrlConst.RoleUrl + name, Optional.class);
+    public List<RoleDto> findByName(String name) {
+        return restTemplate.getForObject(UrlConst.RoleUrl + name, List.class);
     }
 }

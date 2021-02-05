@@ -1,6 +1,5 @@
 package com.nastya.bookShop.controller;
 
-import com.nastya.bookShop.model.Order.OrderContentDto;
 import com.nastya.bookShop.model.shop.ShopDto;
 import com.nastya.bookShop.service.api.ShopService;
 import org.slf4j.Logger;
@@ -40,10 +39,10 @@ public class ShopController {
         }
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<List<ShopDto>> getShopByUsername(@PathVariable("username") String username) {
+    @GetMapping("/username")
+    public ResponseEntity<List<ShopDto>> getShopByUser() {
         try {
-            return new ResponseEntity<>(shopService.getShopByUsername(username), HttpStatus.OK);
+            return new ResponseEntity<>(shopService.getShopByUser(), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Assortment error: {}", e.getMessage());
             throw new RuntimeException(e);

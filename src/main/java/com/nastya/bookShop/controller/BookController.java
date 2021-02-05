@@ -51,12 +51,12 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getOne(@PathVariable("id") Integer id) {
-        try {
-            return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Assortment error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+//        try {
+        return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
+//        } catch (Exception e) {
+//            logger.error("Assortment error: {}", e.getMessage());
+////            throw new RuntimeException(e);
+//        }
     }
 
     @GetMapping()
