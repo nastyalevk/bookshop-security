@@ -17,8 +17,7 @@ public class ShopDto {
     private String city;
     private String address;
     private String description;
-    private Integer classificationId;
-    private String classificationStatus;
+    private ShopClassification classification;
     private Integer userId;
 
 }

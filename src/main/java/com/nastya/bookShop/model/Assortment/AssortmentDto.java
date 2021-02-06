@@ -18,6 +18,6 @@ public class AssortmentDto {
     private Integer quantity;
     private Integer price;
     private String creationDate;
-    private Integer classificationId;
+    private AssortmentClassification classification;
 
 }

@@ -25,6 +25,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         logger.error("Server error: {}", ex.getMessage());
+        ex.printStackTrace();
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 

@@ -75,8 +75,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrderByShop(Integer id) {
-        return restTemplate.getForObject(UrlConst.OrderUrl + "/shop/" + id, List.class);
+    public ResponseEntity getOrderByShop(int page, int size, int shopId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.OrderUrl + "/shop/")
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .queryParam("shopId", shopId);
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
     }
 
     @Override
@@ -104,8 +114,7 @@ public class OrderServiceImpl implements OrderService {
         completeOrderDto.setDeliveryAddress(orderDto.getDeliveryAddress());
         completeOrderDto.setDescription(orderDto.getDescription());
         completeOrderDto.setOrderSubmitDate(orderDto.getOrderSubmitDate());
-        completeOrderDto.setClassificationId(orderDto.getClassificationId());
-        completeOrderDto.setClassificationStatus(orderDto.getClassificationStatus());
+        completeOrderDto.setClassification(orderDto.getClassification());
         completeOrderDto.setOrderCompleteDate(orderDto.getOrderCompleteDate());
         completeOrderDto.setUsername(orderDto.getUsername());
         completeOrderDto.setOrderContent(orderContentDto);

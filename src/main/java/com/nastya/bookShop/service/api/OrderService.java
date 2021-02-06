@@ -18,7 +18,7 @@ public interface OrderService {
 
     ResponseEntity getOrdersByClientUsername(int page, int size);
 
-    List<OrderDto> getOrderByShop(Integer id);
+    ResponseEntity getOrderByShop(int page, int size, int id);
 
     OrderDto getOrder(Integer id);
 

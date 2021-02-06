@@ -20,8 +20,7 @@ public class OrderDto {
     private String deliveryAddress;
     private String description;
     private String OrderSubmitDate;
-    private Integer classificationId;
-    private String classificationStatus;
+    private OrderClassification classification;
     private String orderCompleteDate;
     private String username;
 

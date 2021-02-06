@@ -42,9 +42,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.updateOrderContent(orderContentDto), HttpStatus.OK);
     }
 
-    @GetMapping("/shop/{id}")
-    public ResponseEntity<List<OrderDto>> getOrdersByShop(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(orderService.getOrderByShop(id), HttpStatus.OK);
+    @GetMapping("/shop/")
+    public ResponseEntity getOrdersByShop(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "9") int size,
+                                          @RequestParam() int shopId) {
+        return new ResponseEntity<>(orderService.getOrderByShop(page, size, shopId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
