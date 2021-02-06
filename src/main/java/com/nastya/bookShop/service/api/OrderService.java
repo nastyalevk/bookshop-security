@@ -14,6 +14,8 @@ public interface OrderService {
 
     OrderContentDto saveOrderContent(OrderContentDto orderContentDto);
 
+    OrderContentDto updateOrderContent(OrderContentDto orderContentDto);
+
     ResponseEntity getOrdersByClientUsername(int page, int size);
 
     List<OrderDto> getOrderByShop(Integer id);
@@ -21,5 +23,7 @@ public interface OrderService {
     OrderDto getOrder(Integer id);
 
     List<OrderContentDto> getOrderContent(Integer orderId);
+
+    OrderContentDto getOrderContent(Integer orderId, Integer bookId);
 
 }

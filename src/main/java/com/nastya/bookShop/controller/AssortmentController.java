@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/assortment")
 public class AssortmentController {
-    private static final Logger logger = LoggerFactory.getLogger(AssortmentController.class);
 
     public final AssortmentService assortmentService;
 
@@ -28,66 +27,36 @@ public class AssortmentController {
 
     @GetMapping("/price/{id}")
     public ResponseEntity<Integer> getMinPrice(@PathVariable("id") Integer bookId) {
-        try {
-            return new ResponseEntity<>(assortmentService.getMinPrice(bookId), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Assortment error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+        return new ResponseEntity<>(assortmentService.getMinPrice(bookId), HttpStatus.OK);
     }
 
     @GetMapping("/price/{bookId}/{shopId}")
     public ResponseEntity<Integer> getPriceByBookShop(@PathVariable("bookId") Integer bookId,
                                                       @PathVariable("shopId") Integer shopId) {
-        try {
-            return new ResponseEntity<>(assortmentService.getPriceByBookShop(bookId, shopId), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Assortment error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+        return new ResponseEntity<>(assortmentService.getPriceByBookShop(bookId, shopId), HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody AssortmentDto assortmentDto) {
-        try {
-            return new ResponseEntity<>(assortmentService.save(assortmentDto), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Book error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+        return new ResponseEntity<>(assortmentService.save(assortmentDto), HttpStatus.OK);
     }
 
     @GetMapping("/exists/{bookId}/{shopId}")
     public ResponseEntity<Boolean> existsByBook(@PathVariable("bookId") Integer bookId,
                                                 @PathVariable("shopId") Integer shopId) {
-        try {
-            return new ResponseEntity<>(assortmentService.existsByBook(bookId, shopId), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Assortment error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+        return new ResponseEntity<>(assortmentService.existsByBook(bookId, shopId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/delete/{bookId}/{shopId}")
     public ResponseEntity deleteAssortment(@PathVariable("bookId") Integer bookId,
                                            @PathVariable("shopId") Integer shopId) {
-        try {
-            assortmentService.delete(bookId, shopId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Book error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+        assortmentService.delete(bookId, shopId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = "/{bookId}/{shopId}")
     public ResponseEntity getOne(@PathVariable("bookId") Integer bookId,
                                  @PathVariable("shopId") Integer shopId) {
-        try {
-            return new ResponseEntity<>(assortmentService.getOne(bookId, shopId), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Book error: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+        return new ResponseEntity<>(assortmentService.getOne(bookId, shopId), HttpStatus.OK);
     }
 }

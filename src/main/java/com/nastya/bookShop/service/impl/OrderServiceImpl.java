@@ -52,6 +52,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderContentDto updateOrderContent(OrderContentDto orderContentDto) {
+        return restTemplate.postForEntity
+                (UrlConst.OrderContentUrl + "/update", orderContentDto, OrderContentDto.class).getBody();
+    }
+
+    @Override
     public ResponseEntity getOrdersByClientUsername(int page, int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -81,6 +87,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderContentDto> getOrderContent(Integer orderId) {
         return restTemplate.getForObject(UrlConst.OrderContentUrl + "/" + orderId, List.class);
+    }
+
+    @Override
+    public OrderContentDto getOrderContent(Integer orderId, Integer bookId) {
+        return restTemplate.getForObject(UrlConst.OrderContentUrl + "/" + orderId + "/" + bookId,
+                OrderContentDto.class);
     }
 
 
