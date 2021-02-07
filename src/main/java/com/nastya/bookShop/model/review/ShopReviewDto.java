@@ -16,5 +16,6 @@ public class ShopReviewDto {
     private String comment;
     private Integer rating;
     private Integer shopId;
+    private String datetime;
 
 }
