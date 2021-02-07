@@ -1,7 +1,6 @@
 package com.nastya.bookShop.service.impl;
 
 import com.nastya.bookShop.config.UrlConst;
-import com.nastya.bookShop.model.Order.CompleteOrderDto;
 import com.nastya.bookShop.model.Order.OrderContentDto;
 import com.nastya.bookShop.model.Order.OrderDto;
 import com.nastya.bookShop.model.response.PageResponse;
@@ -31,15 +30,6 @@ public class OrderServiceImpl implements OrderService {
         this.restTemplate = restTemplate;
     }
 
-
-    @Override
-    public CompleteOrderDto getClientOrder(Integer id) {
-        OrderDto order = restTemplate.getForObject(UrlConst.OrderUrl + "client/" + id, OrderDto.class);
-        List<OrderContentDto> orderContent = restTemplate.getForObject
-                (UrlConst.OrderContentUrl + order.getOrderId(), List.class);
-        return transfer(order, orderContent);
-    }
-
     @Override
     public OrderDto saveOrder(OrderDto orderDto) {
         return restTemplate.postForEntity(UrlConst.OrderUrl + "/create", orderDto, OrderDto.class).getBody();
@@ -55,6 +45,12 @@ public class OrderServiceImpl implements OrderService {
     public OrderContentDto updateOrderContent(OrderContentDto orderContentDto) {
         return restTemplate.postForEntity
                 (UrlConst.OrderContentUrl + "/update", orderContentDto, OrderContentDto.class).getBody();
+    }
+
+    @Override
+    public ResponseEntity deleteOrderContent(OrderContentDto orderContentDto) {
+        return restTemplate.postForEntity
+                (UrlConst.OrderContentUrl + "/delete", orderContentDto, ResponseEntity.class);
     }
 
     @Override
@@ -104,21 +100,4 @@ public class OrderServiceImpl implements OrderService {
         return restTemplate.getForObject(UrlConst.OrderContentUrl + "/" + orderId + "/" + bookId,
                 OrderContentDto.class);
     }
-
-
-    private CompleteOrderDto transfer(OrderDto orderDto, List<OrderContentDto> orderContentDto) {
-        CompleteOrderDto completeOrderDto = new CompleteOrderDto();
-        completeOrderDto.setOrderNumber(orderDto.getOrderNumber());
-        completeOrderDto.setShopId(orderDto.getShopId());
-        completeOrderDto.setCost(orderDto.getCost());
-        completeOrderDto.setDeliveryAddress(orderDto.getDeliveryAddress());
-        completeOrderDto.setDescription(orderDto.getDescription());
-        completeOrderDto.setOrderSubmitDate(orderDto.getOrderSubmitDate());
-        completeOrderDto.setClassification(orderDto.getClassification());
-        completeOrderDto.setOrderCompleteDate(orderDto.getOrderCompleteDate());
-        completeOrderDto.setUsername(orderDto.getUsername());
-        completeOrderDto.setOrderContent(orderContentDto);
-        return completeOrderDto;
-    }
-
 }

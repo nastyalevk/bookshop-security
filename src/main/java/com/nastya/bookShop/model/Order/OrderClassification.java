@@ -5,6 +5,7 @@ public enum OrderClassification {
     open,
     submitted,
     processing,
-    processed
+    processed,
+    canceled
 
 }

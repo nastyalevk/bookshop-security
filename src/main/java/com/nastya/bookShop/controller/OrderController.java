@@ -71,4 +71,9 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderContent(orderId, bookId), HttpStatus.OK);
     }
 
+    @PostMapping("/content/delete")
+    public ResponseEntity deleteOrderContent(@RequestBody OrderContentDto orderContentDto) {
+        orderService.deleteOrderContent(orderContentDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

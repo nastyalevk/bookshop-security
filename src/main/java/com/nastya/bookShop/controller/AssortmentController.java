@@ -59,4 +59,8 @@ public class AssortmentController {
                                  @PathVariable("shopId") Integer shopId) {
         return new ResponseEntity<>(assortmentService.getOne(bookId, shopId), HttpStatus.OK);
     }
+    @GetMapping(path = "/{bookId}")
+    public ResponseEntity getOne(@PathVariable("bookId") Integer bookId) {
+        return new ResponseEntity<>(assortmentService.getByBook(bookId), HttpStatus.OK);
+    }
 }

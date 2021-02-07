@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class AssortmentServiceImpl implements AssortmentService {
 
@@ -49,5 +51,10 @@ public class AssortmentServiceImpl implements AssortmentService {
     @Override
     public AssortmentDto getOne(Integer bookId, Integer shopId) {
         return restTemplate.getForObject(UrlConst.AssortmentUrl + "/" + bookId + "/" + shopId, AssortmentDto.class);
+    }
+
+    @Override
+    public List<AssortmentDto> getByBook(Integer bookId) {
+        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/" + bookId, List.class);
     }
 }
