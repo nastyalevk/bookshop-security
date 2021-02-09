@@ -23,14 +23,17 @@ public class UserDetailsImpl implements UserDetails {
 
     private Boolean activated;
 
+    private Boolean isEnabled;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String username, String email, String password, Boolean activated,
+    public UserDetailsImpl(String username, String email, String password, Boolean activated,Boolean isEnabled,
                            Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.activated = activated;
+        this.isEnabled = isEnabled;
         this.authorities = authorities;
     }
 
@@ -43,6 +46,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getActivated(),
+                user.getIsEnabled(),
                 authorities);
     }
 
@@ -84,12 +88,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isEnabled;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return activated;
     }
 
     @Override
