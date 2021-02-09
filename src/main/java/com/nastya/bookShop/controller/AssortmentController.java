@@ -25,11 +25,6 @@ public class AssortmentController {
         this.assortmentService = assortmentService;
     }
 
-    @GetMapping("/price/{id}")
-    public ResponseEntity<Integer> getMinPrice(@PathVariable("id") Integer bookId) {
-        return new ResponseEntity<>(assortmentService.getMinPrice(bookId), HttpStatus.OK);
-    }
-
     @GetMapping("/price/{bookId}/{shopId}")
     public ResponseEntity<Integer> getPriceByBookShop(@PathVariable("bookId") Integer bookId,
                                                       @PathVariable("shopId") Integer shopId) {

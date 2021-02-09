@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface AssortmentService {
 
-    int getMinPrice(int bookId);
-
     int getPriceByBookShop(int bookId, int shopId);
 
     ResponseEntity<AssortmentDto> save(AssortmentDto assortmentDto);
