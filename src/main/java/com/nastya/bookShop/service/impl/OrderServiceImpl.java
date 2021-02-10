@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -55,19 +54,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity getOrdersByClientUsername(int page, int size) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.OrderUrl + "client/")
-                    .queryParam("username", authentication.getName())
-                    .queryParam("page", page)
-                    .queryParam("size", size);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.OrderUrl + "client/")
+                .queryParam("username", SecurityContextHolder.getContext().getAuthentication().getName())
+                .queryParam("page", page)
+                .queryParam("size", size);
 
-            HttpEntity<?> entity = new HttpEntity<>(headers);
-            return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
-        }
-        return null;
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
+
     }
 
     @Override

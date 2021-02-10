@@ -30,14 +30,14 @@ public class BookController {
         return new ResponseEntity<>(bookService.save(bookDto), HttpStatus.OK);
     }
 
-    @PostMapping("/update")
-    public ResponseEntity update(@RequestBody BookDto bookDto) {
-        return new ResponseEntity<>(bookService.updateBook(bookDto), HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getOne(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("exist/{id}")
+    public ResponseEntity<Boolean> isBook(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(bookService.isBook(id), HttpStatus.OK);
     }
 
     @GetMapping()

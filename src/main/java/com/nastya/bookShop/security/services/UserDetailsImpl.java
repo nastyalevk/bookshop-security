@@ -88,12 +88,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isEnabled;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return activated;
+        return isEnabled;
     }
 
     @Override

@@ -22,11 +22,6 @@ public class AssortmentServiceImpl implements AssortmentService {
     }
 
     @Override
-    public int getPriceByBookShop(int bookId, int shopId) {
-        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/price/" + bookId + "/" + shopId, int.class);
-    }
-
-    @Override
     public ResponseEntity<AssortmentDto> save(AssortmentDto assortmentDto) {
         return restTemplate.postForEntity(UrlConst.AssortmentUrl + "/create", assortmentDto, AssortmentDto.class);
     }

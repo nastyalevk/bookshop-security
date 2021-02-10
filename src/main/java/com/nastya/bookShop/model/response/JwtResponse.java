@@ -17,5 +17,6 @@ public class JwtResponse {
     private String email;
     private List<String> roles;
     private Boolean activated;
+    private Boolean isEnabled;
 
 }

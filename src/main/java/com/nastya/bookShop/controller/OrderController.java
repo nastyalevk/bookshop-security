@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,12 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDto orderDto) {
         return new ResponseEntity<>(orderService.saveOrder(orderDto), HttpStatus.OK);
     }
 
     @PostMapping("/content/create")
-    public ResponseEntity<OrderContentDto> createOrderContent(@RequestBody OrderContentDto orderContentDto) {
+    public ResponseEntity<?> createOrderContent(@Valid @RequestBody OrderContentDto orderContentDto) {
         return new ResponseEntity<>(orderService.saveOrderContent(orderContentDto), HttpStatus.OK);
     }
 

@@ -9,9 +9,10 @@ public interface BookService {
 
     ResponseEntity getAllBook(String bookName, int page, int size, String[] sort);
 
-    ResponseEntity<String> updateBook(BookDto bookDto);
-
     BookDto getOne(Integer id);
 
     ResponseEntity getBooksByShop(Integer page, Integer size, Integer shopId);
+
+    Boolean isBook(Integer id);
+
 }

@@ -79,6 +79,7 @@ public class AuthServiceImpl implements AuthService {
         jwtResponse.setEmail(userDetails.getEmail());
         jwtResponse.setRoles(roles);
         jwtResponse.setActivated(userDetails.isAccountNonLocked());
+        jwtResponse.setIsEnabled(userDetails.isEnabled());
         return ResponseEntity.ok(jwtResponse);
     }
 

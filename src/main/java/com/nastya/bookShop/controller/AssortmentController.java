@@ -25,12 +25,6 @@ public class AssortmentController {
         this.assortmentService = assortmentService;
     }
 
-    @GetMapping("/price/{bookId}/{shopId}")
-    public ResponseEntity<Integer> getPriceByBookShop(@PathVariable("bookId") Integer bookId,
-                                                      @PathVariable("shopId") Integer shopId) {
-        return new ResponseEntity<>(assortmentService.getPriceByBookShop(bookId, shopId), HttpStatus.OK);
-    }
-
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody AssortmentDto assortmentDto) {
         return new ResponseEntity<>(assortmentService.save(assortmentDto), HttpStatus.OK);
@@ -54,6 +48,7 @@ public class AssortmentController {
                                  @PathVariable("shopId") Integer shopId) {
         return new ResponseEntity<>(assortmentService.getOne(bookId, shopId), HttpStatus.OK);
     }
+
     @GetMapping(path = "/{bookId}")
     public ResponseEntity getOne(@PathVariable("bookId") Integer bookId) {
         return new ResponseEntity<>(assortmentService.getByBook(bookId), HttpStatus.OK);

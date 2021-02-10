@@ -47,11 +47,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseEntity<String> updateBook(BookDto bookDto) {
-        return restTemplate.postForEntity(UrlConst.BookUrl + "update", bookDto, String.class);
-    }
-
-    @Override
     public BookDto getOne(Integer id) {
         return restTemplate.getForObject(UrlConst.BookUrl + id, BookDto.class);
     }
@@ -68,5 +63,10 @@ public class BookServiceImpl implements BookService {
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
         return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, PageResponse.class);
+    }
+
+    @Override
+    public Boolean isBook(Integer id) {
+        return restTemplate.getForObject(UrlConst.BookUrl+"exist/"+id, Boolean.class);
     }
 }
