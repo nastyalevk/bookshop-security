@@ -7,11 +7,19 @@ import java.util.List;
 
 public interface ReviewService {
 
-    List<ShopReviewDto> getShopReview(Integer shopId);
+    List<ShopReviewDto> getShopReviewClient(Integer shopId);
 
-    List<BookReviewDto> getBookReview(Integer bookId);
+    List<BookReviewDto> getBookReviewClient(Integer bookId);
+
+    List<ShopReviewDto> getShopReviewAdmin();
+
+    List<BookReviewDto> getBookReviewAdmin();
 
     ShopReviewDto saveShopReview(ShopReviewDto shopReviewDto);
 
     BookReviewDto saveBookReview(BookReviewDto bookReviewDto);
+
+    ShopReviewDto getOneShopReview(Integer shopId);
+
+    BookReviewDto getOneBookReview(Integer bookId);
 }

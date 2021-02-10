@@ -17,5 +17,6 @@ public class ShopReviewDto {
     private Integer rating;
     private Integer shopId;
     private String datetime;
+    private Boolean approved;
 
 }

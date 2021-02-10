@@ -1,6 +1,5 @@
 package com.nastya.bookShop.config;
 
-import com.nastya.bookShop.security.jwt.AuthEntryPointJwt;
 import com.nastya.bookShop.security.jwt.AuthTokenFilter;
 import com.nastya.bookShop.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,14 +24,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
-    private final AuthEntryPointJwt unauthorizedHandler;
-
     private final JwtUtils jwtUtils;
 
     public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
-                             AuthEntryPointJwt unauthorizedHandler, JwtUtils jwtUtils) {
+                             JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
-        this.unauthorizedHandler = unauthorizedHandler;
         this.jwtUtils = jwtUtils;
     }
 
@@ -60,10 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers(UrlConst.AuthUrl + "**").permitAll()
                 .antMatchers("/user/**").hasRole("ADMIN")
+                .antMatchers("/review/approve/**").hasRole("ADMIN")
+                .antMatchers("/review/one/**").hasAnyRole("ADMIN","CLIENT")
                 .antMatchers("/book/create").hasRole("OWNER")
                 .antMatchers("/book/update").hasRole("OWNER")
                 .antMatchers("/shop/create").hasRole("OWNER")

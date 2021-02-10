@@ -5,8 +5,6 @@ import com.nastya.bookShop.model.shop.ShopDto;
 import com.nastya.bookShop.service.api.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,12 +27,9 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public List<ShopDto> getShopByUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String username = authentication.getName();
-            return restTemplate.getForObject(UrlConst.ShopUrl + "/username/" + username, List.class);
-        }
-        return null;
+        return restTemplate.getForObject(UrlConst.ShopUrl + "/username/" +
+                SecurityContextHolder.getContext().getAuthentication().getName(), List.class);
+
     }
 
     @Override

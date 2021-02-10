@@ -17,5 +17,6 @@ public class BookReviewDto {
     private Integer rating;
     private Integer bookId;
     private String datetime;
+    private Boolean approved;
 
 }
