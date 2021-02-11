@@ -4,9 +4,8 @@ import com.nastya.bookShop.config.UrlConst;
 import com.nastya.bookShop.model.request.LoginRequest;
 import com.nastya.bookShop.model.request.SignUpRequest;
 import com.nastya.bookShop.service.api.AuthService;
+import com.nastya.bookShop.service.api.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +23,12 @@ import java.io.UnsupportedEncodingException;
 public class AuthController {
 
     private final AuthService authService;
+    private final EmailService emailService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, EmailService emailService) {
         this.authService = authService;
+        this.emailService = emailService;
     }
 
     @PostMapping(path = "/signin")
@@ -43,6 +44,6 @@ public class AuthController {
 
     @GetMapping("/verify/")
     public ResponseEntity verifyUser(@RequestParam(name = "code") String code) {
-        return authService.verify(code);
+        return emailService.verify(code);
     }
 }

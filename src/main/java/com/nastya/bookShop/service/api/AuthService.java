@@ -13,5 +13,4 @@ public interface AuthService {
 
     ResponseEntity<?> registerUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException;
 
-    ResponseEntity verify(String verificationCode);
 }
