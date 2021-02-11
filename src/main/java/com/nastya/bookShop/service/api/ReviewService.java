@@ -2,6 +2,7 @@ package com.nastya.bookShop.service.api;
 
 import com.nastya.bookShop.model.review.BookReviewDto;
 import com.nastya.bookShop.model.review.ShopReviewDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface ReviewService {
     ShopReviewDto getOneShopReview(Integer shopId);
 
     BookReviewDto getOneBookReview(Integer bookId);
+
+    ResponseEntity<BookReviewDto> deleteBookReview(BookReviewDto bookReviewDto);
+
+    ResponseEntity<ShopReviewDto> deleteShopReview(ShopReviewDto shopReviewDto);
 }

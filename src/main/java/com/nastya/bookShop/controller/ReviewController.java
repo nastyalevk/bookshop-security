@@ -66,4 +66,14 @@ public class ReviewController {
     public ResponseEntity<BookReviewDto> createBookReview(@RequestBody BookReviewDto reviewDto) {
         return new ResponseEntity<>(reviewService.saveBookReview(reviewDto), HttpStatus.OK);
     }
+
+    @PostMapping("/delete/shop")
+    public ResponseEntity deleteShopReview(@RequestBody ShopReviewDto shopReviewDto) {
+        return new ResponseEntity(reviewService.deleteShopReview(shopReviewDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/delete/book")
+    public ResponseEntity deleteBookReview(@RequestBody BookReviewDto bookReviewDto) {
+        return new ResponseEntity(reviewService.deleteBookReview(bookReviewDto), HttpStatus.OK);
+    }
 }

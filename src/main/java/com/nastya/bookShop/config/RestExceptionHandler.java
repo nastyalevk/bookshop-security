@@ -49,4 +49,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<Object> handleRuntime(
+            RuntimeException ex) {
+        ApiError apiError = new ApiError(NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        logger.error("Server error: {}", ex.getMessage());
+        return new ResponseEntity<>(apiError, apiError.getStatus());
+    }
+
 }

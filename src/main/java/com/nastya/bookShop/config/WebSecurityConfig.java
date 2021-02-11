@@ -61,6 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers(UrlConst.AuthUrl + "**").permitAll()
                 .antMatchers("/user/**").hasRole("ADMIN")
                 .antMatchers("/review/approve/**").hasRole("ADMIN")
+                .antMatchers("/review/delete/**").hasRole("ADMIN")
                 .antMatchers("/review/one/**").hasAnyRole("ADMIN","CLIENT")
                 .antMatchers("/book/create").hasRole("OWNER")
                 .antMatchers("/book/update").hasRole("OWNER")

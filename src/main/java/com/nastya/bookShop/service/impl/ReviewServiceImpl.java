@@ -5,6 +5,7 @@ import com.nastya.bookShop.model.review.BookReviewDto;
 import com.nastya.bookShop.model.review.ShopReviewDto;
 import com.nastya.bookShop.service.api.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -66,5 +67,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public BookReviewDto getOneBookReview(Integer reviewId) {
         return restTemplate.getForObject(UrlConst.ReviewUrl + "one/book/" + reviewId, BookReviewDto.class);
+    }
+
+    @Override
+    public ResponseEntity<BookReviewDto> deleteBookReview(BookReviewDto bookReviewDto) {
+        return restTemplate.postForEntity(UrlConst.ReviewUrl + "delete/book", bookReviewDto, BookReviewDto.class);
+    }
+
+    @Override
+    public ResponseEntity<ShopReviewDto> deleteShopReview(ShopReviewDto shopReviewDto) {
+        return restTemplate.postForEntity(UrlConst.ReviewUrl + "delete/shop", shopReviewDto, ShopReviewDto.class);
     }
 }
