@@ -30,6 +30,11 @@ public class AssortmentController {
         return new ResponseEntity<>(assortmentService.save(assortmentDto), HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity update(@RequestBody AssortmentDto assortmentDto) {
+        return new ResponseEntity<>(assortmentService.update(assortmentDto), HttpStatus.OK);
+    }
+
     @GetMapping("/exists/{bookId}/{shopId}")
     public ResponseEntity<Boolean> existsByBook(@PathVariable("bookId") Integer bookId,
                                                 @PathVariable("shopId") Integer shopId) {

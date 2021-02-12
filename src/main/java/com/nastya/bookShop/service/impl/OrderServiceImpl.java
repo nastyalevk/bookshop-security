@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -74,7 +73,8 @@ public class OrderServiceImpl implements OrderService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.OrderUrl + "/shop/")
                 .queryParam("page", page)
                 .queryParam("size", size)
-                .queryParam("shopId", shopId);
+                .queryParam("shopId", shopId)
+                .queryParam("usernameRequested", SecurityContextHolder.getContext().getAuthentication().getName());
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 

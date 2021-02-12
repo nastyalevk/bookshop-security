@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AssortmentService {
 
+    ResponseEntity<AssortmentDto> update(AssortmentDto assortmentDto);
+
     ResponseEntity<AssortmentDto> save(AssortmentDto assortmentDto);
 
     boolean existsByBook(Integer bookId, Integer shopId);

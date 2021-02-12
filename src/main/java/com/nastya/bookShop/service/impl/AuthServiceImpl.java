@@ -94,6 +94,9 @@ public class AuthServiceImpl implements AuthService {
 
         UserDto user = new UserDto();
         user.setUsername(signUpRequest.getUsername());
+        if (!signUpRequest.getEmail().matches("^(.+)@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email!");
+        }
         user.setEmail(signUpRequest.getEmail());
         if (!signUpRequest.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
             throw new IllegalArgumentException("Password is too easy!\n" +

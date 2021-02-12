@@ -30,6 +30,11 @@ public class BookController {
         return new ResponseEntity<>(bookService.save(bookDto), HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<BookDto> update(@RequestBody BookDto bookDto) {
+        return new ResponseEntity<>(bookService.save(bookDto), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getOne(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);

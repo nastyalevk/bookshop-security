@@ -6,6 +6,7 @@ import com.nastya.bookShop.service.api.AssortmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,28 +24,34 @@ public class AssortmentServiceImpl implements AssortmentService {
 
     @Override
     public ResponseEntity<AssortmentDto> save(AssortmentDto assortmentDto) {
-        return restTemplate.postForEntity(UrlConst.AssortmentUrl + "/create", assortmentDto, AssortmentDto.class);
+        return restTemplate.postForEntity(UrlConst.AssortmentUrl + "create/", assortmentDto, AssortmentDto.class);
+    }
+
+    @Override
+    public ResponseEntity<AssortmentDto> update(AssortmentDto assortmentDto) {
+        return restTemplate.postForEntity(UrlConst.AssortmentUrl + "update/" +
+                SecurityContextHolder.getContext().getAuthentication().getName(), assortmentDto, AssortmentDto.class);
     }
 
     @Override
     public boolean existsByBook(Integer bookId, Integer shopId) {
         return restTemplate.
-                getForObject(UrlConst.AssortmentUrl + "/exists/" + bookId + "/" + shopId, Boolean.class).
+                getForObject(UrlConst.AssortmentUrl + "exists/" + bookId + "/" + shopId, Boolean.class).
                 booleanValue();
     }
 
     @Override
     public void delete(Integer bookId, Integer shopId) {
-        restTemplate.getForObject(UrlConst.AssortmentUrl + "/delete/" + bookId + "/" + shopId, HttpStatus.class);
+        restTemplate.getForObject(UrlConst.AssortmentUrl + "delete/" + bookId + "/" + shopId, HttpStatus.class);
     }
 
     @Override
     public AssortmentDto getOne(Integer bookId, Integer shopId) {
-        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/" + bookId + "/" + shopId, AssortmentDto.class);
+        return restTemplate.getForObject(UrlConst.AssortmentUrl + bookId + "/" + shopId, AssortmentDto.class);
     }
 
     @Override
     public List<AssortmentDto> getByBook(Integer bookId) {
-        return restTemplate.getForObject(UrlConst.AssortmentUrl + "/" + bookId, List.class);
+        return restTemplate.getForObject(UrlConst.AssortmentUrl + bookId, List.class);
     }
 }
