@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,9 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
-    private UserService userService;
-    private UserRoleService userRoleService;
-    private EmailService emailService;
+    private final UserService userService;
+    private final UserRoleService userRoleService;
+    private final EmailService emailService;
 
     @Autowired
     public AuthServiceImpl(AuthenticationManager authenticationManager, PasswordEncoder encoder,
@@ -64,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         JwtResponse jwtResponse = new JwtResponse();
@@ -80,16 +81,39 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> registerUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException,
             MessagingException, CredentialsException {
+        repeatCheck(signUpRequest);
+        return createUser(signUpRequest);
+    }
+
+    @Override
+    public ResponseEntity<?> newUserByAdmin(SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException {
+        repeatCheck(signUpRequest);
+        UserDto user = new UserDto();
+        user.setUsername(signUpRequest.getUsername());
+        if (!signUpRequest.getEmail().matches("^(.+)@(.+)$")) {
+            throw new CredentialsException("Invalid email!");
+        }
+        user.setEmail(signUpRequest.getEmail());
+        String randomCode = RandomString.make(20);
+        user.setPassword(encoder.encode(randomCode));
+        user.setIsEnabled(true);
+        user.setActivated(true);
+        emailService.sendCreation(user, randomCode);
+        userService.saveUser(user);
+        generateUserRolesDto(user, generateRoles(signUpRequest.getRole()));
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    private void repeatCheck(SignUpRequest signUpRequest) {
         if (userService.existsByUserName(signUpRequest.getUsername())) {
             throw new CredentialsException("Error: Username is already taken!");
         }
         if (userService.existsByEmail(signUpRequest.getEmail())) {
             throw new CredentialsException("Error: Email is already in use!");
         }
-        return createUser(signUpRequest);
     }
 
-    private ResponseEntity createUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException,
+    private ResponseEntity<MessageResponse> createUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException,
             MessagingException, CredentialsException {
         UserDto user = new UserDto();
         user.setUsername(signUpRequest.getUsername());
@@ -97,12 +121,24 @@ public class AuthServiceImpl implements AuthService {
             throw new CredentialsException("Invalid email!");
         }
         user.setEmail(signUpRequest.getEmail());
+        if (!signUpRequest.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            throw new CredentialsException("Password is too easy!\n" +
+                    "Minimum eight characters, at least one letter and one number.");
+        }
+        user.setPassword(encoder.encode(signUpRequest.getPassword()));
         if (signUpRequest.getActivated() == null) {
             user.setActivated(true);
         } else {
             user.setActivated(signUpRequest.getActivated());
         }
-        Set<String> strRoles = signUpRequest.getRole();
+        user.setIsEnabled(false);
+        userService.saveUser(user);
+        generateUserRolesDto(user, generateRoles(signUpRequest.getRole()));
+        emailService.sendVerificationEmail(user);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    private Set<RoleDto> generateRoles(Set<String> strRoles) {
         Set<RoleDto> roles = new HashSet<>();
         if (strRoles == null) {
             RoleDto userRole = new RoleDto();
@@ -132,28 +168,15 @@ public class AuthServiceImpl implements AuthService {
                 }
             });
         }
-        if (user.getPassword()==null) {
-            String randomCode = RandomString.make(20);
-            user.setPassword(encoder.encode(randomCode));
-            user.setIsEnabled(true);
-            emailService.sendCreation(user, randomCode);
-        } else {
-            if (!signUpRequest.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
-                throw new CredentialsException("Password is too easy!\n" +
-                        "Minimum eight characters, at least one letter and one number.");
-            }
-            user.setPassword(encoder.encode(signUpRequest.getPassword()));
-            emailService.sendVerificationEmail(user);
-            user.setIsEnabled(false);
-        }
-        userService.saveUser(user);
+        return roles;
+    }
+
+    private void generateUserRolesDto(UserDto user, Set<RoleDto> roles) {
         UserRolesDto userRolesDto = new UserRolesDto();
         for (RoleDto i : roles) {
             userRolesDto.setUsername(user.getUsername());
             userRolesDto.setRoleId(i.getId());
             userRoleService.save(userRolesDto);
         }
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
-
 }

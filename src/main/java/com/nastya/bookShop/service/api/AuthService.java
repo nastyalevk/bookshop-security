@@ -14,4 +14,5 @@ public interface AuthService {
 
     ResponseEntity<?> registerUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException, CredentialsException;
 
+    ResponseEntity<?> newUserByAdmin(SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException;
 }

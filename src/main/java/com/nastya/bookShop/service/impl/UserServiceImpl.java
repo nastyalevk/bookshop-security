@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -49,7 +50,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserDto userDto) {
-        restTemplate.postForEntity(UrlConst.UserUrl + "update/", userDto, String.class);
+        restTemplate.postForEntity(UrlConst.UserUrl + "update/" +
+                SecurityContextHolder.getContext().getAuthentication().getName(), userDto, String.class);
     }
 
     @Override
@@ -69,7 +71,8 @@ public class UserServiceImpl implements UserService {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.UserUrl + "update-roles/")
                 .queryParam("roles", roles)
-                .queryParam("id", id);
+                .queryParam("userId", id)
+                .queryParam("adminUsername", SecurityContextHolder.getContext().getAuthentication().getName());
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 

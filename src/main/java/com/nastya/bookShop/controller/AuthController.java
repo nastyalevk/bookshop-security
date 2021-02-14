@@ -32,20 +32,26 @@ public class AuthController {
         this.emailService = emailService;
     }
 
-    @PostMapping(path = "/signin")
+    @PostMapping(path = "signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return authService.authenticateUser(loginRequest);
     }
 
-    @PostMapping(path = "/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest)
+    @PostMapping(path = "signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest)
             throws UnsupportedEncodingException, MessagingException, CredentialsException {
         return authService.registerUser(signUpRequest);
     }
 
-    @GetMapping("/verify/")
+    @GetMapping("verify/")
     public ResponseEntity verifyUser(@RequestParam(name = "code") String code)
             throws UnsupportedEncodingException, MessagingException {
         return emailService.verify(code);
+    }
+
+    @PostMapping(path = "user/new")
+    public ResponseEntity<?> newUserByAdmin(@RequestBody SignUpRequest signUpRequest)
+            throws UnsupportedEncodingException, MessagingException, CredentialsException {
+        return authService.newUserByAdmin(signUpRequest);
     }
 }
