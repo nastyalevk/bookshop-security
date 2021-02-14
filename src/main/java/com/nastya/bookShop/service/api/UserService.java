@@ -22,5 +22,5 @@ public interface UserService {
 
     UserDto getOne(Integer id);
 
-    void updateUserRoles(String[] roles, Integer id);
+    void updateUserRoles(String[] roles, Integer id, String message);
 }

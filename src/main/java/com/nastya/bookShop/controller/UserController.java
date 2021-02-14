@@ -42,8 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/update-roles/")
-    public ResponseEntity<HttpStatus> updateRoles(@RequestParam String[] roles, @RequestParam Integer id) {
-        userService.updateUserRoles(roles, id);
+    public ResponseEntity<HttpStatus> updateRoles(@RequestParam String[] roles,
+                                                  @RequestParam Integer id,
+                                                  @RequestParam String message) {
+        userService.updateUserRoles(roles, id, message);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

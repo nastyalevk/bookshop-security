@@ -65,13 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserRoles(String[] roles, Integer id) {
+    public void updateUserRoles(String[] roles, Integer id, String message) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlConst.UserUrl + "update-roles/")
                 .queryParam("roles", roles)
                 .queryParam("userId", id)
+                .queryParam("message", message)
                 .queryParam("adminUsername", SecurityContextHolder.getContext().getAuthentication().getName());
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
