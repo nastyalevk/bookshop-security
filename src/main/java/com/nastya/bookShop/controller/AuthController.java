@@ -1,6 +1,7 @@
 package com.nastya.bookShop.controller;
 
 import com.nastya.bookShop.config.UrlConst;
+import com.nastya.bookShop.exception.CredentialsException;
 import com.nastya.bookShop.model.request.LoginRequest;
 import com.nastya.bookShop.model.request.SignUpRequest;
 import com.nastya.bookShop.service.api.AuthService;
@@ -37,13 +38,14 @@ public class AuthController {
     }
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest)
-            throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest)
+            throws UnsupportedEncodingException, MessagingException, CredentialsException {
         return authService.registerUser(signUpRequest);
     }
 
     @GetMapping("/verify/")
-    public ResponseEntity verifyUser(@RequestParam(name = "code") String code) {
+    public ResponseEntity verifyUser(@RequestParam(name = "code") String code)
+            throws UnsupportedEncodingException, MessagingException {
         return emailService.verify(code);
     }
 }

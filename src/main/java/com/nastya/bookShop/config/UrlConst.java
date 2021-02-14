@@ -14,5 +14,10 @@ public class UrlConst {
     public static final String TokenUrl = Url + "/token/";
 
     public static final String AuthUrl = "/auth/";
+
+    public static final String AngularUrl = "http://localhost:4200";
+    public static final String AngularAuthUrl = AngularUrl+AuthUrl;
+
+
 }
 

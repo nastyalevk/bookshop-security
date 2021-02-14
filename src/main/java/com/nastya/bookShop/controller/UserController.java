@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -27,8 +29,15 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> create(@RequestBody UserDto userDto) {
+    public ResponseEntity<HttpStatus> create(@RequestBody UserDto userDto)
+            throws UnsupportedEncodingException, MessagingException {
         userService.saveUser(userDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<HttpStatus> update(@RequestBody UserDto userDto) {
+        userService.updateUser(userDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.nastya.bookShop.service.impl;
 
+import com.nastya.bookShop.exception.CredentialsException;
 import com.nastya.bookShop.model.request.LoginRequest;
 import com.nastya.bookShop.model.request.SignUpRequest;
 import com.nastya.bookShop.model.response.JwtResponse;
@@ -14,6 +15,7 @@ import com.nastya.bookShop.service.api.AuthService;
 import com.nastya.bookShop.service.api.EmailService;
 import com.nastya.bookShop.service.api.UserRoleService;
 import com.nastya.bookShop.service.api.UserService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -76,40 +78,30 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<?> registerUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<?> registerUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException,
+            MessagingException, CredentialsException {
         if (userService.existsByUserName(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            throw new CredentialsException("Error: Username is already taken!");
         }
         if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            throw new CredentialsException("Error: Email is already in use!");
         }
         return createUser(signUpRequest);
     }
 
-    private ResponseEntity createUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException, MessagingException {
-
+    private ResponseEntity createUser(SignUpRequest signUpRequest) throws UnsupportedEncodingException,
+            MessagingException, CredentialsException {
         UserDto user = new UserDto();
         user.setUsername(signUpRequest.getUsername());
         if (!signUpRequest.getEmail().matches("^(.+)@(.+)$")) {
-            throw new IllegalArgumentException("Invalid email!");
+            throw new CredentialsException("Invalid email!");
         }
         user.setEmail(signUpRequest.getEmail());
-        if (!signUpRequest.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
-            throw new IllegalArgumentException("Password is too easy!\n" +
-                    "Minimum eight characters, at least one letter and one number.");
-        }
-        user.setPassword(encoder.encode(signUpRequest.getPassword()));
-        Boolean activated = signUpRequest.getActivated();
-        if (activated == null) {
+        if (signUpRequest.getActivated() == null) {
             user.setActivated(true);
         } else {
             user.setActivated(signUpRequest.getActivated());
         }
-        user.setIsEnabled(false);
         Set<String> strRoles = signUpRequest.getRole();
         Set<RoleDto> roles = new HashSet<>();
         if (strRoles == null) {
@@ -140,6 +132,20 @@ public class AuthServiceImpl implements AuthService {
                 }
             });
         }
+        if (user.getPassword()==null) {
+            String randomCode = RandomString.make(20);
+            user.setPassword(encoder.encode(randomCode));
+            user.setIsEnabled(true);
+            emailService.sendCreation(user, randomCode);
+        } else {
+            if (!signUpRequest.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+                throw new CredentialsException("Password is too easy!\n" +
+                        "Minimum eight characters, at least one letter and one number.");
+            }
+            user.setPassword(encoder.encode(signUpRequest.getPassword()));
+            emailService.sendVerificationEmail(user);
+            user.setIsEnabled(false);
+        }
         userService.saveUser(user);
         UserRolesDto userRolesDto = new UserRolesDto();
         for (RoleDto i : roles) {
@@ -147,7 +153,6 @@ public class AuthServiceImpl implements AuthService {
             userRolesDto.setRoleId(i.getId());
             userRoleService.save(userRolesDto);
         }
-        emailService.sendVerificationEmail(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 

@@ -1,11 +1,19 @@
 package com.nastya.bookShop.model.Order;
 
+import lombok.Getter;
+
+@Getter
 public enum OrderClassification {
 
-    open,
-    submitted,
-    processing,
-    processed,
-    canceled
+    OPEN("open"),
+    SUBMITTED("submitted"),
+    PROCESSING("processing"),
+    PROCESSED("processed"),
+    CANCELED("canceled");
 
+    private String name;
+
+    OrderClassification(String name) {
+        this.name = name;
+    }
 }

@@ -1,5 +1,6 @@
 package com.nastya.bookShop.service.impl;
 
+import com.nastya.bookShop.config.UrlConst;
 import com.nastya.bookShop.model.response.MessageResponse;
 import com.nastya.bookShop.model.user.ConfirmationTokenDto;
 import com.nastya.bookShop.model.user.UserDto;
@@ -54,13 +55,35 @@ public class EmailServiceImpl implements EmailService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
-        String verifyURL = "localhost:4200/auth/" + confirmationToken.getConfirmationToken();
+        String verifyURL = UrlConst.AngularAuthUrl + confirmationToken.getConfirmationToken();
         content = content.replace("[[URL]]", verifyURL);
         helper.setText(content, true);
         mailSender.send(message);
     }
 
-    public ResponseEntity verify(String verificationCode) {
+    @Override
+    public void sendCreation(UserDto user, String randomCode)
+            throws MessagingException, UnsupportedEncodingException {
+        String subject = "You've been registered!";
+        String content = "Your login: [[username]]<br>"
+                + "Your password: [[password]]<br>"
+                + "Thank you,<br>"
+                + "Your Bookshop.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(env.getProperty("spring.mail.username"), "Nastya");
+        helper.setTo(user.getEmail());
+        helper.setSubject(subject);
+
+        content = content.replace("[[username]]", user.getUsername());
+        content = content.replace("[[password]]", randomCode);
+        helper.setText(content, true);
+        mailSender.send(message);
+    }
+
+    public ResponseEntity verify(String verificationCode) throws UnsupportedEncodingException, MessagingException {
         ConfirmationTokenDto confirmationTokenDto = confirmationTokenService.findByToken(verificationCode);
         UserDto user = userService.findByUserName(confirmationTokenDto.getUsername());
         if (user == null || user.getIsEnabled()) {
